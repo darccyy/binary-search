@@ -21,7 +21,7 @@ fn binary_search_step<T: Ord>(
     step_count: usize,
     // Amount of items removed to left of guess
     // To return correct index, for entire array
-    left_removed_count: usize,
+    left_removed: usize,
 ) -> Option<(usize, usize)> {
     // Array only has one item
     if array.len() < 2 {
@@ -29,7 +29,7 @@ fn binary_search_step<T: Ord>(
         // Return correct index and step count
         if let Some(only_item) = array.first() {
             if only_item == target {
-                return Some((left_removed_count, step_count));
+                return Some((left_removed, step_count));
             }
         }
         // Item not found
@@ -47,7 +47,7 @@ fn binary_search_step<T: Ord>(
     let (half_array, new_left_removed) = match target.cmp(guess) {
         // Target matches!
         // Return correct index and step count
-        Ordering::Equal => return Some((left_removed_count + half_index, step_count)),
+        Ordering::Equal => return Some((left_removed + half_index, step_count)),
 
         // Target is 'less' than guess
         // It will be found to the left (before guess in array)
@@ -66,6 +66,6 @@ fn binary_search_step<T: Ord>(
         // Increase step count
         step_count + 1,
         // Add length of removed items left of guess
-        left_removed_count + new_left_removed,
+        left_removed + new_left_removed,
     )
 }
